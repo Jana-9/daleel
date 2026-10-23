@@ -1,4 +1,7 @@
-"""Write the OpenAPI schema to frontend/openapi.json. Run: uv run python -m scripts.export_openapi"""
+"""Write the OpenAPI schema to frontend/openapi.json.
+
+Run from backend/:  uv run python -m scripts.export_openapi
+"""
 
 import json
 from pathlib import Path
