@@ -31,8 +31,22 @@ Decisions and findings:
 
 Not verified yet: GitHub Actions has not run on GitHub; `docker compose up` not started in the build environment.
 
-## Phase 3 · Answers: next
+## Phase 3 · Answers: done (2026-10-24)
 
-Start with: `pg_trgm` migration on `content_normalized` → hybrid search service (vector + trigram, Reciprocal Rank Fusion) with the xfail case as the first target → evaluation set over the sample guide → LLM provider interface + fake → answer endpoint with citation validation → chat UI and PDF viewer with highlight → rate limits → deployment guide.
+Built:
+- Backend: migration 0003 (conversations, messages, message_sources), hybrid search service and endpoint, Gemini provider (header auth, JSON mode, error mapping), RAG service (relevance floor, escaped numbered passages, JSON parsing, citation validation and renumbering), conversation endpoints with per-user rate limits, `scripts/check_gemini.py`, evaluation set + script + results.
+- Frontend: `/chat` page, conversation list, citation chips, source list, PDF page viewer with highlights (pdf.js), rename/delete, navigation between documents and questions.
+- Tests: 116 backend tests + 5 real-model hybrid checks; 18 Playwright runs (9 scenarios × desktop and phone), passing with both the real embedding model and CI's fake providers.
 
-Decision needed from Jana: which LLM to use for writing answers (needs an API key, or a free local model with weaker Arabic).
+Findings:
+- Plain RRF hurt top-1 accuracy (70% vs 90% for vectors alone). Requiring 60% keyword coverage gave 95%. The dialect absence question moved from rank 4 to 1.
+- Similarity cannot detect unanswerable questions (0.67 vs 0.32 overlap); refusal is the model's job, verified by citation checks.
+- pdf.js rendered Arabic scrambled inside the RTL page: a canvas inherits CSS `direction`. Fixed with `dir="ltr"` on the viewer; verified against standalone pdf.js output.
+- Keyword ranking varied between runs because of floating-point tie order; fixed by rounding the score.
+
+Not verified: real Gemini calls (no key in the build environment; the user tests with `scripts.check_gemini`), GitHub Actions on GitHub, `docker compose up`.
+
+## Next
+1. Jana: add a new Gemini key to `backend/.env`, run `uv run python -m scripts.check_gemini`, then `uv run python -m eval.run_eval --answers` and record the answer metrics in the README.
+2. Push to GitHub (Jana-9/daleel) and confirm CI is green.
+3. Deployment guide and a public demo.

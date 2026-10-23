@@ -49,14 +49,23 @@ Tests: normalisation and chunking units, upload validation, ownership isolation,
 
 ## Phase 3: Answers
 
-Search: vector similarity (pgvector) + keyword (`pg_trgm` on normalised text, which works for Arabic) merged with Reciprocal Rank Fusion. Top-K configurable.
+**Status: done**, with these deviations from the original plan (each for a stated reason):
 
-Answering: retrieve → build prompt with numbered passages, treating document text as untrusted data → model answers with inline markers `[1]`, `[2]` → backend keeps only markers that point to retrieved passages → if nothing relevant was retrieved, return a "not found in your documents" answer without calling the model. Stream with SSE.
+| Planned | Built | Why |
+| --- | --- | --- |
+| Keyword search with `pg_trgm` | `LIKE` substring matching on normalised text, IDF-weighted, in SQL | `pg_trgm` and Postgres full-text search classify characters by database locale; with a `C` locale, Arabic letters are not treated as word characters. Substring matching works in any locale. No index: fine for one user's documents. |
+| Plain RRF | RRF where keyword results must contain ≥60% of the question's keywords | Measured: plain RRF dropped Recall@1 from 90% (vector) to 70%; with the rule it is 95%. |
+| Similarity threshold decides "not found" | Low floor (0.25) only skips obviously unrelated questions; the model decides, the backend verifies citations | Measured: unanswerable questions scored up to 0.67, answerable as low as 0.32. |
+| Streaming answers (SSE) | Single JSON response | Kept the answer as validated JSON; Flash-Lite answers in a few seconds. Streaming is a later improvement. |
+| Rate limit on login and ask | Ask only (per user, per minute and per day, counted from saved questions) | The ask endpoint costs API quota; login limiting is still open. |
+| Dockerfiles + deployment guide | Not yet | Deferred until the GitHub repository exists; Docker could not be run in the build environment. |
 
-Tables: `conversations`, `messages`, `message_sources` (message_id, chunk_id, rank, page_number, excerpt).
+Tables: `conversations` (owner, title), `messages` (role, content, status, model, latency, token counts), `message_sources` (marker, document/chunk ids with ON DELETE SET NULL, title, page, excerpt, bboxes).
 
-UI: chat page with streaming answer, numbered citation chips, source panel; clicking a citation opens the PDF at that page and highlights the passage (bbox). Conversation list, rename, delete.
+Endpoints: `POST /api/v1/search`; `GET/POST /api/v1/conversations`; `GET/PATCH/DELETE /api/v1/conversations/{id}`; `POST /api/v1/conversations/{id}/messages`.
 
-Evaluation: `backend/eval/` with ~30 questions (Arabic and English, including unanswerable ones) over public sample documents; script reports Recall@5, MRR, citation validity, refusal accuracy, latency. Results go in the README with dataset size and limitations.
+Answer model: Gemini via REST (`x-goog-api-key` header, so the newer "AQ." keys work), JSON output, temperature 0.1, configurable model (`gemini-3.5-flash-lite` default). `FakeLLMProvider` for tests and CI.
 
-Delivery: rate limit on login and ask endpoints, Dockerfiles, deployment guide, README results, `docs/interview-guide.md` completed.
+UI: `/chat` with conversation list, answer with citation chips and source list, side sheet with the pdf.js-rendered page and highlighted rectangles, rename/delete, example questions, "no ready documents" state.
+
+Evaluation: `backend/eval/questions.json` (25 questions), `eval/run_eval.py` (Recall@1/3/5, MRR, latency, unanswerable similarity; `--answers` for grounding and refusal with the real model), results in `eval/results.md`.
