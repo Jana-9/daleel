@@ -28,10 +28,14 @@ Target users: students and staff reading university regulations, employees readi
 | File storage | `StorageService` interface; local disk in dev, S3-compatible in prod; storage key = UUID, never the filename | Swappable, no path traversal |
 | AI providers | `EmbeddingProvider` and `LLMProvider` interfaces, plus a deterministic fake for tests | Swap providers without touching the pipeline; tests never call paid APIs |
 | Vector index | pgvector HNSW, cosine distance; store `embedding_model` with each chunk | Know what needs re-embedding after a model change |
+| Embedding model | `paraphrase-multilingual-MiniLM-L12-v2` via fastembed, 384 dims, CPU | Free, private, handles Arabic and cross-lingual queries; vector size fixed by migration 0002 |
+| Chunk size | 450 characters, 90 overlap | Measured: model reads 128 tokens, ~3.9 Arabic chars/token; 900 chars was truncated |
+| Worker placement | Thread inside the API in development; separate `app.worker` process in production | One command to run locally; independent scaling in production |
+| Failure reporting | `documents.error_code` (stable code) + `processing_jobs.error_detail` (internal) | UI translates codes; internals never reach the client |
 
 ## Phase 2: Documents
 
-Tables: `documents` (id, owner_id, title, original_filename, storage_key, mime_type, file_size, page_count, status, error, timestamps), `processing_jobs` (id, document_id, status, attempts, locked_at, started_at, finished_at, error), `document_chunks` (id, document_id, chunk_index, page_number, content, content_normalized, embedding vector(N), embedding_model, token_count, char_start, char_end, bbox jsonb, created_at; unique (document_id, chunk_index)).
+**Status: done.** Tables as built: `documents` (id, owner_id, title, original_filename, storage_key, mime_type, file_size, page_count, status, error_code, processed_at, timestamps), `processing_jobs` (id, document_id, status, attempts, error_code, error_detail, locked_at, started_at, finished_at, duration_ms, created_at), `document_chunks` (id, document_id, chunk_index, page_number, content, content_normalized, word_count, bboxes jsonb, embedding vector(384), embedding_model, created_at; unique (document_id, chunk_index)).
 
 Statuses: `UPLOADED → PROCESSING → READY | FAILED`. Only READY after chunks and embeddings are committed.
 
