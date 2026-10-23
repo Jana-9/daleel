@@ -4,7 +4,10 @@ The model is asked for JSON ({"found": bool, "answer": str}); the provider just 
 and `rag_service` parses and validates it, so a provider never decides what counts as cited.
 """
 
+import html
+import json
 import logging
+import re
 from dataclasses import dataclass
 from functools import lru_cache
 from typing import Protocol
@@ -130,7 +133,11 @@ class GeminiProvider:
 
 
 class FakeLLMProvider:
-    """Deterministic stand-in for tests: cites passage [1], or returns `next_text` if set."""
+    """Deterministic stand-in for tests and offline demos (never allowed in production).
+
+    It does not understand anything: it quotes the start of passage [1]. Tests can script its
+    reply by setting `next_text`.
+    """
 
     model_name = "fake-llm-v1"
 
@@ -142,9 +149,10 @@ class FakeLLMProvider:
         self.calls.append((system, prompt))
         if self.next_text is not None:
             return LLMResult(self.next_text, 100, 20)
-        return LLMResult(
-            '{"found": true, "answer": "حسب الوثيقة، الإجابة موجودة هنا [1]."}', 100, 20
-        )
+        match = re.search(r'<passage id="1"[^>]*>\n(.*?)\n</passage>', prompt, re.DOTALL)
+        quote = html.unescape(match.group(1))[:160].strip() if match else ""
+        answer = f"(إجابة تجريبية) حسب الوثيقة: «{quote}» [1]" if quote else ""
+        return LLMResult(json.dumps({"found": bool(quote), "answer": answer}), 100, 20)
 
 
 @lru_cache
