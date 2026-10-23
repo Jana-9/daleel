@@ -5,29 +5,29 @@ Embedding model: `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2`; 
 
 | Method | Recall@1 | Recall@3 | Recall@5 | MRR | Median latency |
 | --- | --- | --- | --- | --- | --- |
-| vector | 90% | 90% | 100% | 0.92 | 8 ms |
-| keyword | 65% | 70% | 70% | 0.68 | 2 ms |
-| hybrid | 95% | 95% | 100% | 0.96 | 10 ms |
+| vector | 90% | 90% | 100% | 0.92 | 7 ms |
+| keyword | 50% | 60% | 70% | 0.57 | 1 ms |
+| hybrid | 95% | 95% | 100% | 0.96 | 8 ms |
 
 Rank of the first correct passage per question (— = not in top 5):
 
 | Question | Kind | vector | keyword | hybrid |
 | --- | --- | --- | --- | --- |
 | ما شروط القبول في الجامعة؟ | arabic | 1 | 1 | 1 |
-| كم أقل عدد ساعات أقدر أسجلها في الفصل؟ | dialect | 1 | — | 1 |
+| كم أقل عدد ساعات أقدر أسجلها في الفصل؟ | dialect | 1 | 4 | 1 |
 | كم رسوم بدل فاقد البطاقة الجامعية؟ | arabic | 1 | 1 | 1 |
 | What is the minimum score for admission? | cross-lingual | 1 | — | 1 |
 | متى أسجل المقررات؟ | dialect | 1 | 1 | 1 |
 | وش شروط التسجيل في التدريب التعاوني؟ | dialect | 1 | 1 | 1 |
 | كم مدة التدريب التعاوني؟ | arabic | 1 | 1 | 1 |
-| كيف يتم تقييم الطالب في التدريب؟ | arabic | 1 | 1 | 1 |
+| كيف يتم تقييم الطالب في التدريب؟ | arabic | 1 | 2 | 1 |
 | هل أقدر أقسم التدريب على فصلين؟ | dialect | 1 | 1 | 1 |
 | How long is the cooperative training? | cross-lingual | 1 | — | 1 |
 | كيف أعتذر عن التدريب التعاوني؟ | dialect | 1 | 2 | 1 |
 | كم نسبة الغياب اللي تحرمني من الاختبار؟ | dialect | 4 | 1 | 1 |
 | متى آخر موعد للاعتذار عن الفصل؟ | arabic | 1 | 1 | 1 |
-| أبي أنسحب من مادة، متى آخر موعد؟ | dialect | 1 | 1 | 1 |
-| كم فصل أقدر أأجل دراستي؟ | dialect | 5 | 1 | 5 |
+| أبي أنسحب من مادة، متى آخر موعد؟ | dialect | 1 | — | 1 |
+| كم فصل أقدر أأجل دراستي؟ | dialect | 5 | 5 | 5 |
 | What happens if I miss too many lectures? | cross-lingual | 1 | — | 1 |
 | Who is eligible for university housing? | english | 1 | 1 | 1 |
 | كم رسوم السكن؟ | cross-lingual | 1 | — | 1 |

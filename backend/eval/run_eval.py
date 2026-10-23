@@ -210,7 +210,8 @@ def to_markdown(data: dict, retrieval: dict, answers: dict | None) -> str:
         "so these numbers show relative differences between methods, not expected accuracy on "
         "real documents. With only 8 passages, Recall@5 is close to trivial; Recall@1 and MRR "
         "are the informative columns. The coverage threshold was chosen on this same set "
-        "(results were identical at 60% and 75%), so a larger held-out set is needed to confirm it.",
+        "(results were identical at 60% and 75%), so a larger held-out set is needed to "
+        "confirm it.",
     ]
     return "\n".join(lines) + "\n"
 
