@@ -226,7 +226,7 @@ function ThreadHeader({ id, title }: { id: string; title: string }) {
   const [confirming, setConfirming] = useState(false);
 
   return (
-    <div className="flex items-center gap-2 border-b border-line py-3">
+    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 border-b border-line py-3">
       {editing ? (
         <form
           className="flex flex-1 gap-2"
@@ -254,7 +254,7 @@ function ThreadHeader({ id, title }: { id: string; title: string }) {
         </form>
       ) : (
         <>
-          <h1 className="min-w-0 flex-1 truncate text-[17px] font-bold" dir="auto">
+          <h1 className="min-w-0 basis-full truncate text-[17px] font-bold sm:flex-1 sm:basis-auto" dir="auto">
             {title}
           </h1>
           <Link href="/chat" className={buttonClass("ghost", "h-9 px-3 text-[14px] lg:hidden")}>
