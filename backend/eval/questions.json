@@ -1,0 +1,31 @@
+{
+  "document": "samples/daleel-sample-guide.pdf",
+  "notes": "Questions about the fictional sample guide. 'evidence' is a phrase from the passage that answers the question; a search result counts as correct if its text contains it. Questions with evidence null are not answered by the document.",
+  "questions": [
+    {"id": "admission-ar", "question": "ما شروط القبول في الجامعة؟", "evidence": "85 بالمئة", "page": 1, "kind": "arabic"},
+    {"id": "min-load", "question": "كم أقل عدد ساعات أقدر أسجلها في الفصل؟", "evidence": "12 ساعة", "page": 1, "kind": "dialect"},
+    {"id": "card-fee", "question": "كم رسوم بدل فاقد البطاقة الجامعية؟", "evidence": "50 ريالا", "page": 1, "kind": "arabic"},
+    {"id": "admission-en", "question": "What is the minimum score for admission?", "evidence": "85 بالمئة", "page": 1, "kind": "cross-lingual"},
+    {"id": "registration-when", "question": "متى أسجل المقررات؟", "evidence": "قبل بداية الفصل الدراسي بأسبوعين", "page": 1, "kind": "dialect"},
+    {"id": "coop-conditions", "question": "وش شروط التسجيل في التدريب التعاوني؟", "evidence": "100 ساعة معتمدة", "page": 2, "kind": "dialect"},
+    {"id": "coop-duration", "question": "كم مدة التدريب التعاوني؟", "evidence": "ثمانية أسابيع متصلة", "page": 2, "kind": "arabic"},
+    {"id": "coop-grading", "question": "كيف يتم تقييم الطالب في التدريب؟", "evidence": "60 بالمئة", "page": 2, "kind": "arabic"},
+    {"id": "coop-split", "question": "هل أقدر أقسم التدريب على فصلين؟", "evidence": "لا يجوز تقسيم المدة", "page": 2, "kind": "dialect"},
+    {"id": "coop-duration-en", "question": "How long is the cooperative training?", "evidence": "ثمانية أسابيع", "page": 2, "kind": "cross-lingual"},
+    {"id": "coop-withdraw", "question": "كيف أعتذر عن التدريب التعاوني؟", "evidence": "بعذر مقبول قبل بدايته", "page": 2, "kind": "dialect"},
+    {"id": "absence", "question": "كم نسبة الغياب اللي تحرمني من الاختبار؟", "evidence": "25 بالمئة", "page": 3, "kind": "dialect"},
+    {"id": "semester-withdraw", "question": "متى آخر موعد للاعتذار عن الفصل؟", "evidence": "الأسبوع العاشر", "page": 3, "kind": "arabic"},
+    {"id": "course-drop", "question": "أبي أنسحب من مادة، متى آخر موعد؟", "evidence": "الأسبوع الثامن", "page": 3, "kind": "dialect"},
+    {"id": "postpone", "question": "كم فصل أقدر أأجل دراستي؟", "evidence": "فصلين دراسيين متتاليين", "page": 3, "kind": "dialect"},
+    {"id": "absence-en", "question": "What happens if I miss too many lectures?", "evidence": "25 بالمئة", "page": 3, "kind": "cross-lingual"},
+    {"id": "housing-eligibility", "question": "Who is eligible for university housing?", "evidence": "100 kilometres", "page": 4, "kind": "english"},
+    {"id": "housing-fee-ar", "question": "كم رسوم السكن؟", "evidence": "1,500 riyals", "page": 4, "kind": "cross-lingual"},
+    {"id": "parking", "question": "How much does a parking permit cost?", "evidence": "200 riyals", "page": 4, "kind": "english"},
+    {"id": "housing-refund-ar", "question": "هل يرجعون فلوس السكن إذا طلعت منه؟", "evidence": "not refunded", "page": 4, "kind": "cross-lingual"},
+    {"id": "intl-fees", "question": "كم رسوم الدراسة للطالب الدولي؟", "evidence": null, "page": null, "kind": "unanswerable"},
+    {"id": "summer", "question": "متى تبدأ الإجازة الصيفية؟", "evidence": null, "page": null, "kind": "unanswerable"},
+    {"id": "dress-code", "question": "What is the dress code on campus?", "evidence": null, "page": null, "kind": "unanswerable"},
+    {"id": "scholarships", "question": "هل فيه منح دراسية للطلاب المتفوقين؟", "evidence": null, "page": null, "kind": "unanswerable"},
+    {"id": "president", "question": "مين رئيس الجامعة؟", "evidence": null, "page": null, "kind": "unanswerable"}
+  ]
+}
