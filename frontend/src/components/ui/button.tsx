@@ -1,6 +1,6 @@
 import type { ButtonHTMLAttributes } from "react";
 
-type Variant = "primary" | "ghost";
+type Variant = "primary" | "ghost" | "danger";
 
 const base =
   "inline-flex items-center justify-center gap-2 rounded-xl px-5 h-11 text-[15px] font-semibold " +
@@ -11,6 +11,7 @@ const base =
 const variants: Record<Variant, string> = {
   primary: "bg-accent text-accent-ink hover:opacity-90",
   ghost: "text-ink hover:bg-surface-2",
+  danger: "bg-danger text-danger-ink hover:opacity-90",
 };
 
 export function buttonClass(variant: Variant = "primary", extra = "") {

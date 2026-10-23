@@ -13,6 +13,7 @@
   --accent-soft: #dcefe9;
   --danger: #a3302a;
   --danger-soft: #f8e4e2;
+  --danger-ink: #ffffff;
   --shadow: 0 18px 40px -24px rgb(26 31 30 / 0.25);
 }
 
@@ -29,6 +30,7 @@
     --accent-soft: #173a33;
     --danger: #f08a82;
     --danger-soft: #3a1c1a;
+    --danger-ink: #2a0b09;
     --shadow: 0 18px 40px -24px rgb(0 0 0 / 0.7);
   }
 }
@@ -45,6 +47,7 @@
   --color-accent-soft: var(--accent-soft);
   --color-danger: var(--danger);
   --color-danger-soft: var(--danger-soft);
+  --color-danger-ink: var(--danger-ink);
   --font-sans: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
   --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
 }
