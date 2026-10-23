@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from app.api.routes import auth, documents, health
+from app.api.routes import auth, conversations, documents, health, search
 from app.core.config import get_settings
 from app.core.errors import register_error_handlers
 from app.services.processing import run_worker
@@ -31,7 +31,7 @@ def create_app() -> FastAPI:
     settings = get_settings()
     app = FastAPI(
         title="Daleel API",
-        version="0.2.0",
+        version="0.3.0",
         description="Ask questions about Arabic and English documents and get cited answers.",
         # Hide interactive docs in production; keep them for local development.
         docs_url=None if settings.is_production else "/api/docs",
@@ -42,6 +42,8 @@ def create_app() -> FastAPI:
     app.include_router(health.router, prefix="/api")
     app.include_router(auth.router, prefix="/api/v1")
     app.include_router(documents.router, prefix="/api/v1")
+    app.include_router(search.router, prefix="/api/v1")
+    app.include_router(conversations.router, prefix="/api/v1")
     return app
 
 

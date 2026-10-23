@@ -16,6 +16,7 @@ os.environ.setdefault(
 os.environ.setdefault("JWT_SECRET", "test-secret-value-for-pytest-only")
 os.environ["STORAGE_DIR"] = STORAGE_DIR
 os.environ["EMBEDDING_PROVIDER"] = "fake"
+os.environ["LLM_PROVIDER"] = "fake"
 os.environ["RUN_WORKER_IN_API"] = "false"  # tests drive the worker step by step
 
 import shutil  # noqa: E402
@@ -109,3 +110,25 @@ def make_pdf(pages: list[str] | None = None, *, blank_pages: int = 0, password: 
 
 def upload(client: TestClient, data: bytes, filename: str = "guide.pdf"):
     return client.post("/api/v1/documents", files={"file": (filename, data, "application/pdf")})
+
+
+@pytest.fixture
+def ready_document(logged_in: TestClient, sample_pdf) -> dict:
+    """The sample guide, uploaded and processed (with fake embeddings)."""
+    from app.services import processing
+
+    document = upload(logged_in, sample_pdf).json()
+    assert processing.process_next_job()
+    return logged_in.get(f"/api/v1/documents/{document['id']}").json()
+
+
+@pytest.fixture
+def fake_llm():
+    """The shared fake model; tests can set `next_text` to script its reply."""
+    from app.services.llm import get_llm_provider
+
+    provider = get_llm_provider()
+    provider.next_text = None
+    provider.calls.clear()
+    yield provider
+    provider.next_text = None
