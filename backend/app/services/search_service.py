@@ -105,7 +105,7 @@ _VECTOR_SQL = text(f"""
 # Each matched term adds its inverse document frequency (rarer words count more), computed
 # over the same scope, so "تدريب" (in many passages) weighs less than "غياب" (in one).
 _KEYWORD_SQL = text(f"""
-    WITH scope AS (SELECT c.id, c.content_normalized {_SCOPE}),
+    WITH scope AS (SELECT c.id, c.document_id, c.chunk_index, c.content_normalized {_SCOPE}),
     terms AS (SELECT unnest(CAST(:patterns AS text[])) AS pattern),
     df AS (
         SELECT t.pattern, count(s.id) AS df
@@ -113,12 +113,14 @@ _KEYWORD_SQL = text(f"""
         GROUP BY t.pattern
     ),
     total AS (SELECT count(*) AS n FROM scope)
-    SELECT s.id, sum(ln(1 + total.n::float / df.df)) AS score, count(*) AS matched
+    -- Rounded so that float summation order cannot reorder near-equal scores between runs.
+    SELECT s.id, round(sum(ln(1 + total.n::float / df.df))::numeric, 6) AS score,
+           count(*) AS matched
     FROM scope s
     JOIN df ON s.content_normalized LIKE df.pattern ESCAPE '\\'
     CROSS JOIN total
-    GROUP BY s.id
-    ORDER BY score DESC, s.id
+    GROUP BY s.id, s.document_id, s.chunk_index
+    ORDER BY score DESC, s.document_id, s.chunk_index  -- deterministic tie-break
     LIMIT :limit
 """).bindparams(bindparam("patterns", type_=ARRAY(String)))
 
