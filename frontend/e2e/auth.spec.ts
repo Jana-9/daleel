@@ -42,7 +42,7 @@ test("full session: register, logout, failed login, login", async ({ page }) => 
   await page.goto("/login");
   await expect(page).toHaveURL(/\/dashboard$/);
 
-  await page.getByRole("button", { name: "تسجيل الخروج" }).click();
+  await page.getByRole("button", { name: "خروج" }).click();
   await expect(page).toHaveURL(/\/login$/);
 
   await page.getByLabel("البريد الإلكتروني").fill(email);

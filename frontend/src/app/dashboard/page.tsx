@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -33,9 +34,15 @@ export default function DashboardPage() {
   return (
     <div className="flex flex-1 flex-col">
       <AppHeader user={me.data} />
-      <main className="mx-auto w-full max-w-5xl flex-1 px-5 py-10">
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-10 sm:px-5">
         <h1 className="animate-rise text-[28px] font-bold">أهلًا {me.data.name}</h1>
-        <p className="mt-1 text-muted">ارفعي وثائقك هنا، وبعد ما تجهز تقدرين تسألينها.</p>
+        <p className="mt-1 text-muted">
+          ارفعي وثائقك هنا، وبعد ما تجهز تقدرين{" "}
+          <Link href="/chat" className="font-semibold text-accent underline-offset-4 hover:underline">
+            تسألينها
+          </Link>
+          .
+        </p>
 
         <div className="animate-rise mt-8 [animation-delay:60ms]">
           <UploadDropzone />
