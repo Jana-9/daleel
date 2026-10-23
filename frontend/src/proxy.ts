@@ -11,7 +11,8 @@ export function proxy(request: NextRequest) {
   const hasSession = request.cookies.has(SESSION_COOKIE);
   const { pathname } = request.nextUrl;
 
-  if (pathname.startsWith("/dashboard") && !hasSession) {
+  const isApp = pathname.startsWith("/dashboard") || pathname.startsWith("/chat");
+  if (isApp && !hasSession) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
   if ((pathname === "/login" || pathname === "/register") && hasSession) {
@@ -21,5 +22,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/login", "/register"],
+  matcher: ["/dashboard/:path*", "/chat/:path*", "/login", "/register"],
 };
