@@ -12,8 +12,10 @@ concurrency:
 env:
   DATABASE_URL: postgresql+psycopg://postgres:postgres@localhost:5432/daleel_test
   JWT_SECRET: ci-only-secret-not-used-anywhere-else
-  # CI never downloads the AI model; the real-model test runs locally (RUN_MODEL_TESTS=1).
+  # CI never downloads a model or calls a paid API: both AI providers use deterministic fakes.
+  # Real-model checks run locally (RUN_MODEL_TESTS=1, eval/run_eval.py, scripts/check_gemini.py).
   EMBEDDING_PROVIDER: fake
+  LLM_PROVIDER: fake
 
 jobs:
   backend:
