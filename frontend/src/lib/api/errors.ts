@@ -27,6 +27,17 @@ const MESSAGES: Record<string, string> = {
   invalid_pdf: "الملف تالف أو ما يمكن قراءته.",
   document_not_found: "الوثيقة غير موجودة أو انحذفت.",
   not_retryable: "ما يمكن إعادة معالجة هذي الوثيقة الآن.",
+  // Questions
+  conversation_not_found: "المحادثة غير موجودة أو انحذفت.",
+  no_ready_documents: "ارفعي وثيقة وانتظري لين تصير جاهزة، بعدها تقدرين تسألين.",
+  document_not_ready: "الوثيقة لسا ما جهزت.",
+  rate_limited: "أسئلة كثيرة في وقت قصير. انتظري دقيقة وجربي مرة ثانية.",
+  llm_quota: "وصلنا للحد المجاني لخدمة الذكاء الاصطناعي. جربي بعد شوي أو بكرة.",
+  llm_not_configured: "خدمة الإجابة غير مفعّلة: أضيفي GEMINI_API_KEY في ملف backend/.env.",
+  llm_auth: "مفتاح Gemini غير صالح أو انحذف. أنشئي مفتاح جديد وحدّثي ملف .env.",
+  llm_model_not_found: "نموذج Gemini المحدد غير متاح لهذا المفتاح. شغّلي scripts.check_gemini.",
+  llm_unavailable: "خدمة الذكاء الاصطناعي ما ردّت. جربي مرة ثانية.",
+  llm_bad_response: "وصلت إجابة غير صالحة من خدمة الذكاء الاصطناعي. جربي مرة ثانية.",
 };
 
 /** Why processing failed (documents.error_code). */
