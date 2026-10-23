@@ -164,7 +164,8 @@ def to_markdown(data: dict, retrieval: dict, answers: dict | None) -> str:
         f"({', '.join(sorted({q['kind'] for q in answerable}))}), "
         f"{len(data['questions']) - len(answerable)} unanswerable.",
         f"Embedding model: `{settings.embedding_model}`; chunks of {settings.chunk_size} "
-        f"characters; RRF k = {settings.rrf_k}.",
+        f"characters; RRF k = {settings.rrf_k}; hybrid keeps keyword results covering "
+        f"≥ {settings.keyword_min_coverage:.0%} of the question's keywords.",
         "",
         "| Method | Recall@1 | Recall@3 | Recall@5 | MRR | Median latency |",
         "| --- | --- | --- | --- | --- | --- |",
@@ -205,8 +206,11 @@ def to_markdown(data: dict, retrieval: dict, answers: dict | None) -> str:
         ]
     lines += [
         "",
-        "Limitations: one short document and a small hand-written question set, so these numbers "
-        "show relative differences between methods, not expected accuracy on real documents.",
+        "Limitations: one short document (8 passages) and a small hand-written question set, "
+        "so these numbers show relative differences between methods, not expected accuracy on "
+        "real documents. With only 8 passages, Recall@5 is close to trivial; Recall@1 and MRR "
+        "are the informative columns. The coverage threshold was chosen on this same set "
+        "(results were identical at 60% and 75%), so a larger held-out set is needed to confirm it.",
     ]
     return "\n".join(lines) + "\n"
 
