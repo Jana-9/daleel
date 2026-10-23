@@ -23,7 +23,7 @@ def test_upload_stores_file_and_queues_processing(logged_in: TestClient, sample_
     assert body["page_count"] == 4
     assert body["file_size"] == len(sample_pdf)
     assert body["original_filename"] == "دليل الطالب.pdf"
-    assert body["title"] == "Daleel sample student guide (fictional)"  # from PDF metadata
+    assert body["title"] == "دليل الطالب - جامعة الساحل - نموذج تجريبي"  # from PDF metadata
     assert body["chunk_count"] == 0
     assert len(stored_files()) == 1
 

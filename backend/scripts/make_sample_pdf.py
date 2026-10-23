@@ -75,7 +75,7 @@ def build(font_dir: Path) -> None:
         body = "".join(f"<p>{text}</p>" for text in paragraphs)
         html = f'<div dir="{direction}"><h1>{heading}</h1>{body}</div>'
         page.insert_htmlbox(pymupdf.Rect(56, 56, 539, 800), html, css=CSS, archive=archive)
-    doc.set_metadata({"title": "Daleel sample student guide (fictional)", "author": "Daleel"})
+    doc.set_metadata({"title": "دليل الطالب - جامعة الساحل - نموذج تجريبي", "author": "Daleel"})
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     doc.subset_fonts()  # embed only the glyphs used, keeps the file small
     doc.save(str(OUTPUT), garbage=4, deflate=True)

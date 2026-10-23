@@ -9,7 +9,7 @@ from tests.conftest import SAMPLE_PDF, make_pdf
 def test_inspect_reads_page_count_and_title(sample_pdf):
     info = inspect_pdf(sample_pdf, max_pages=100)
     assert info.page_count == 4
-    assert info.title == "Daleel sample student guide (fictional)"
+    assert info.title == "دليل الطالب - جامعة الساحل - نموذج تجريبي"
 
 
 @pytest.mark.parametrize(
